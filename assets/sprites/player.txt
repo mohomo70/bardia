@@ -1,0 +1,4 @@
+# Placeholder Asset: player.png
+# Description: Player spritesheet (32x32, 16 frames)
+# Replace this file with an actual image asset
+# Recommended size: 32x32 pixels for sprites
