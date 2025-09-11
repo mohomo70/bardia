@@ -1,0 +1,4 @@
+# Placeholder Asset: enemy.png
+# Description: Enemy spritesheet (32x32, 8 frames)
+# Replace this file with an actual image asset
+# Recommended size: 32x32 pixels for sprites

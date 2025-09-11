@@ -1,0 +1,4 @@
+# Placeholder Asset: sword-slash.png
+# Description: Sword slash effect
+# Replace this file with an actual image asset
+# Recommended size: 32x32 pixels for sprites

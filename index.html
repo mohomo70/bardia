@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sword of Xolan-like Platformer</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #2c3e50;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        
+        #game-container {
+            border: 2px solid #34495e;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .instructions {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: white;
+            font-size: 14px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="instructions">
+        <strong>Controls:</strong><br>
+        Arrow Keys: Move & Jump<br>
+        Space: Attack<br>
+        <br>
+        <strong>Note:</strong> This is a placeholder build with basic colored rectangles.
+        Replace the placeholder assets with actual sprites for the full experience!
+    </div>
+    <div id="game-container"></div>
+    <script type="module" src="/src/main.js"></script>
+</body>
+</html>
