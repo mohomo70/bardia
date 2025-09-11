@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Asset Generator</title>
+</head>
+<body>
+    <canvas id="canvas" width="512" height="32" style="border: 1px solid black;"></canvas>
+    <br>
+    <button onclick="generatePlayer()">Generate Player</button>
+    <button onclick="generateEnemy()">Generate Enemy</button>
+    <button onclick="generateCoin()">Generate Coin</button>
+    <button onclick="generateGround()">Generate Ground</button>
+    <button onclick="generateSword()">Generate Sword</button>
+    
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        function generatePlayer() {
+            canvas.width = 512;
+            canvas.height = 32;
+            ctx.fillStyle = '#6496ff'; // Blue
+            for (let i = 0; i < 16; i++) {
+                const x = i * 32;
+                ctx.fillRect(x, 0, 32, 32);
+                
+                // Add simple face
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(x + 8, 8, 4, 4); // Left eye
+                ctx.fillRect(x + 20, 8, 4, 4); // Right eye
+                ctx.fillStyle = '#6496ff';
+            }
+            downloadCanvas('player.png');
+        }
+        
+        function generateEnemy() {
+            canvas.width = 256;
+            canvas.height = 32;
+            ctx.fillStyle = '#ff6464'; // Red
+            for (let i = 0; i < 8; i++) {
+                const x = i * 32;
+                ctx.fillRect(x, 0, 32, 32);
+                
+                // Add angry face
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(x + 8, 8, 4, 4); // Left eye
+                ctx.fillRect(x + 20, 8, 4, 4); // Right eye
+                ctx.fillStyle = '#ff6464';
+            }
+            downloadCanvas('enemy.png');
+        }
+        
+        function generateCoin() {
+            canvas.width = 32;
+            canvas.height = 32;
+            ctx.fillStyle = '#ffd700'; // Gold
+            ctx.beginPath();
+            ctx.arc(16, 16, 12, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.fillStyle = '#ffff64';
+            ctx.beginPath();
+            ctx.arc(16, 16, 8, 0, 2 * Math.PI);
+            ctx.fill();
+            downloadCanvas('coin.png');
+        }
+        
+        function generateGround() {
+            canvas.width = 32;
+            canvas.height = 32;
+            ctx.fillStyle = '#8b4513'; // Brown
+            ctx.fillRect(0, 0, 32, 32);
+            ctx.fillStyle = '#228b22'; // Green
+            ctx.fillRect(0, 0, 32, 8);
+            downloadCanvas('ground.png');
+        }
+        
+        function generateSword() {
+            canvas.width = 64;
+            canvas.height = 32;
+            ctx.fillStyle = '#ffff64'; // Yellow
+            ctx.fillRect(16, 8, 32, 16);
+            downloadCanvas('sword-slash.png');
+        }
+        
+        function downloadCanvas(filename) {
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+    </script>
+</body>
+</html>

@@ -25,6 +25,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         // Create animations
         this.createAnimations();
         
+        // Set initial animation
+        this.play('idle');
+        
         // Set up input
         this.cursors = scene.input.keyboard.createCursorKeys();
         this.spaceKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
@@ -92,7 +95,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         if (Phaser.Input.Keyboard.JustDown(this.cursors.up) && this.coyoteTime > 0) {
             this.setVelocityY(this.jumpVelocity);
             this.coyoteTime = 0;
-            this.scene.sound.play('jump', { volume: 0.3 });
+            try {
+                this.scene.sound.play('jump', { volume: 0.3 });
+            } catch (e) {
+                console.log('Jump sound not available');
+            }
         }
 
         // Variable jump height
@@ -148,7 +155,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.scene.physics.add.overlap(hitBox, this.scene.enemy, (hitBox, enemy) => {
             if (enemy.takeDamage) {
                 enemy.takeDamage(1);
-                this.scene.sound.play('hit', { volume: 0.5 });
+                try {
+                    this.scene.sound.play('hit', { volume: 0.5 });
+                } catch (e) {
+                    console.log('Hit sound not available');
+                }
                 
                 // Screen shake
                 this.scene.cameras.main.shake(100, 4);

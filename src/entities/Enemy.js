@@ -98,7 +98,11 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
                 const currentCoins = this.scene.registry.get('coins');
                 this.scene.registry.set('coins', currentCoins + 1);
                 this.scene.coinsText.setText(`Coins: ${currentCoins + 1}`);
-                this.scene.sound.play('coin', { volume: 0.3 });
+                try {
+                    this.scene.sound.play('coin', { volume: 0.3 });
+                } catch (e) {
+                    console.log('Coin sound not available');
+                }
             }
         });
     }

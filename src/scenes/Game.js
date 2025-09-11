@@ -20,6 +20,15 @@ export default class Game extends Phaser.Scene {
         // Set up physics
         this.physics.add.collider(this.player, this.ground);
         this.physics.add.collider(this.enemy, this.ground);
+        
+        // Player-enemy collision
+        this.physics.add.overlap(this.player, this.enemy, (player, enemy) => {
+            // Handle player taking damage from enemy
+            if (enemy.isDead) return;
+            // For now, just push player back
+            const direction = player.x < enemy.x ? -1 : 1;
+            player.setVelocityX(direction * 100);
+        });
 
         // Set up camera
         this.cameras.main.setBounds(0, 0, 1600, 600);

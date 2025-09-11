@@ -64,14 +64,19 @@ export default class Preload extends Phaser.Scene {
             assetText.destroy();
         });
 
+        this.load.on('loaderror', (file) => {
+            console.warn('Failed to load asset:', file.key);
+        });
+
         // Load placeholder assets
-        this.load.spritesheet('player', 'assets/sprites/player.png', { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet('enemy', 'assets/sprites/enemy.png', { frameWidth: 32, frameHeight: 32 });
-        this.load.image('sword-slash', 'assets/sprites/sword-slash.png');
-        this.load.image('coin', 'assets/sprites/coin.png');
-        this.load.image('ground', 'assets/sprites/ground.png');
+        this.load.spritesheet('player', 'assets/sprites/player.svg', { frameWidth: 32, frameHeight: 32 });
+        this.load.spritesheet('enemy', 'assets/sprites/enemy.svg', { frameWidth: 32, frameHeight: 32 });
+        this.load.image('sword-slash', 'assets/sprites/sword-slash.svg');
+        this.load.image('coin', 'assets/sprites/coin.svg');
+        this.load.image('ground', 'assets/sprites/ground.svg');
         
-        // Load sounds
+        // Load sounds (placeholder files for now)
+        // Note: These are placeholder files and won't play actual sounds
         this.load.audio('jump', 'assets/sfx/jump.wav');
         this.load.audio('hit', 'assets/sfx/hit.wav');
         this.load.audio('coin', 'assets/sfx/coin.wav');
