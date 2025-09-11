@@ -2,16 +2,15 @@
 
 A Phaser 3 based 2D action platformer inspired by Sword of Xolan.
 
-## Current Status: Phase 1 - Minimal Playable Shell
+## Current Status: Phase 5 - Shipping & Stretch Goals ✅
 
 ### ✅ Completed Features
-- Basic project setup with Vite and Phaser 3
-- Player movement (left/right/jump) with arcade physics
-- Basic enemy with simple AI
-- Sword attack system with hit detection
-- Coin collection system
-- Camera following player
-- Basic HUD showing coin count
+- **Phase 0**: Project setup with Vite and Phaser 3
+- **Phase 1**: Player movement, jumping, and combat system
+- **Phase 2**: Core game feel with coyote time, variable jump, attack buffer, level system, parallax background
+- **Phase 3**: Health system, heart collectibles, checkpoint system
+- **Phase 4**: Juice effects, speed-run timer, build pipeline
+- **Phase 5**: GitHub Pages deployment, itch.io ready build
 
 ### 🎮 Controls
 - **Arrow Keys**: Move left/right and jump
@@ -51,33 +50,45 @@ assets/
 └── sfx/               # Sound effects (placeholder files)
 ```
 
-### 🎯 Next Steps (Phase 2)
-- Add coyote-time jump
-- Variable jump height
-- Attack buffer system
-- Screen shake and hit-stop effects
-- Particle effects on enemy death
-- Import Tiled map for level design
-- Parallax background layers
+### 🎯 Game Features
+- **Movement**: Smooth platformer movement with coyote time and variable jump height
+- **Combat**: Sword attack system with hit detection, screen shake, and hit-stop
+- **Health System**: 3 hearts with invulnerability frames and heart collectibles
+- **Checkpoints**: Save progress and restore health/coins
+- **Speed-run Timer**: Track your best completion time
+- **Juice Effects**: Dust particles, camera lookahead, slow-motion on kills
+- **Level System**: Tile-based level with spawn points and decorations
+- **Parallax Background**: Multi-layer scrolling background
 
-### 📝 Notes
-- Currently using SVG placeholder assets
+### 🚀 Deployment
+- **GitHub Pages**: Automatic deployment on push to main
+- **itch.io Ready**: Build includes README_itch.txt for publishing
+- **Local Development**: `npm run dev` for development server
+- **Production Build**: `npm run build` for optimized build
+
+### 📝 Technical Notes
+- Built with Phaser 3 and Vite
+- Uses SVG placeholder assets (easily replaceable)
 - Sound effects are placeholder files
-- Basic physics and collision detection implemented
-- Camera follows player with smooth interpolation
+- Local storage for best times and checkpoints
+- Responsive design with camera following
 
-### 🐛 Known Issues
-- Placeholder assets are simple colored rectangles
-- No actual sound effects (placeholder files)
-- Basic enemy AI (moves toward player)
-- No level progression system yet
+### 🎮 How to Play
+1. Use arrow keys to move and jump
+2. Press space to attack enemies with your sword
+3. Collect coins by defeating enemies
+4. Collect hearts to restore health
+5. Activate checkpoints to save progress
+6. Try to beat your best completion time!
 
 ---
 
-**Phase Progress**: 1/5 Complete
+**Phase Progress**: 5/5 Complete ✅
 - ✅ Phase 0: One-time Setup
-- 🔄 Phase 1: Minimal Playable Shell (In Progress)
-- ⏳ Phase 2: Core Game Feel
-- ⏳ Phase 3: Content & Systems
-- ⏳ Phase 4: Polishing Loop
-- ⏳ Phase 5: Shipping & Stretch Goals
+- ✅ Phase 1: Minimal Playable Shell
+- ✅ Phase 2: Core Game Feel
+- ✅ Phase 3: Content & Systems
+- ✅ Phase 4: Polishing Loop
+- ✅ Phase 5: Shipping & Stretch Goals
+
+**Status**: Ready for deployment and play! 🎉
