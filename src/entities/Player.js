@@ -14,6 +14,12 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.isAttacking = false;
         this.attackCooldown = 0;
         
+        // Health system
+        this.maxHealth = 3;
+        this.health = this.maxHealth;
+        this.isInvulnerable = false;
+        this.invulnerabilityDuration = 1000; // 1 second
+        
         // Coyote time (5 frames grace after leaving ground)
         this.coyoteTime = 0;
         this.coyoteTimeMax = 5;
@@ -190,5 +196,48 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     update() {
         this.handleMovement();
         this.handleAttack();
+    }
+
+    takeDamage(damage) {
+        if (this.isInvulnerable || this.health <= 0) return false;
+        
+        this.health -= damage;
+        this.isInvulnerable = true;
+        
+        // Visual feedback - blink effect
+        this.scene.tweens.add({
+            targets: this,
+            alpha: 0.3,
+            duration: 100,
+            yoyo: true,
+            repeat: 5,
+            onComplete: () => {
+                this.alpha = 1;
+            }
+        });
+        
+        // Knockback
+        const direction = this.x < this.scene.player.x ? -1 : 1;
+        this.setVelocityX(direction * 200);
+        this.setVelocityY(-100);
+        
+        // End invulnerability
+        this.scene.time.delayedCall(this.invulnerabilityDuration, () => {
+            this.isInvulnerable = false;
+        });
+        
+        // Update health display
+        this.scene.updateHealthDisplay();
+        
+        return true;
+    }
+
+    heal(amount) {
+        this.health = Math.min(this.health + amount, this.maxHealth);
+        this.scene.updateHealthDisplay();
+    }
+
+    isDead() {
+        return this.health <= 0;
     }
 }

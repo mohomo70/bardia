@@ -73,6 +73,8 @@ export default class Preload extends Phaser.Scene {
         this.load.spritesheet('enemy', 'assets/sprites/enemy.svg', { frameWidth: 32, frameHeight: 32 });
         this.load.image('sword-slash', 'assets/sprites/sword-slash.svg');
         this.load.image('coin', 'assets/sprites/coin.svg');
+        this.load.image('heart', 'assets/sprites/heart.svg');
+        this.load.image('checkpoint', 'assets/sprites/checkpoint.svg');
         this.load.image('ground', 'assets/sprites/ground.svg');
         
         // Load sounds (placeholder files for now)

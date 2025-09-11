@@ -1,5 +1,7 @@
 import Player from '../entities/Player.js';
 import Enemy from '../entities/Enemy.js';
+import Heart from '../entities/Heart.js';
+import Checkpoint from '../entities/Checkpoint.js';
 import { LEVEL1_DATA, TILE_TYPES } from '../data/Level1.js';
 
 export default class Game extends Phaser.Scene {
@@ -26,6 +28,14 @@ export default class Game extends Phaser.Scene {
             this.enemies.push(enemy);
         });
 
+        // Create hearts
+        this.hearts = [];
+        this.createHearts();
+
+        // Create checkpoints
+        this.checkpoints = [];
+        this.createCheckpoints();
+
         // Set up physics
         this.physics.add.collider(this.player, this.groundLayer);
         this.enemies.forEach(enemy => {
@@ -36,9 +46,17 @@ export default class Game extends Phaser.Scene {
         this.physics.add.overlap(this.player, this.enemies, (player, enemy) => {
             // Handle player taking damage from enemy
             if (enemy.isDead) return;
-            // For now, just push player back
-            const direction = player.x < enemy.x ? -1 : 1;
-            player.setVelocityX(direction * 100);
+            player.takeDamage(1);
+        });
+
+        // Player-heart collision
+        this.physics.add.overlap(this.player, this.hearts, (player, heart) => {
+            heart.collect();
+        });
+
+        // Player-checkpoint collision
+        this.physics.add.overlap(this.player, this.checkpoints, (player, checkpoint) => {
+            checkpoint.activate();
         });
 
         // Set up camera
@@ -51,6 +69,12 @@ export default class Game extends Phaser.Scene {
             fill: '#fff'
         });
         this.coinsText.setScrollFactor(0);
+
+        this.healthText = this.add.text(16, 60, 'Health: 3', {
+            fontSize: '32px',
+            fill: '#fff'
+        });
+        this.healthText.setScrollFactor(0);
 
         // Initialize registry
         this.registry.set('coins', 0);
@@ -160,6 +184,39 @@ export default class Game extends Phaser.Scene {
             0xFFFFFF
         );
         this.clouds.setScrollFactor(0.5);
+    }
+
+    createHearts() {
+        // Place hearts at random positions on the ground
+        const heartPositions = [
+            { x: 200, y: 400 },
+            { x: 400, y: 400 },
+            { x: 600, y: 400 }
+        ];
+        
+        heartPositions.forEach(pos => {
+            const heart = new Heart(this, pos.x, pos.y);
+            this.hearts.push(heart);
+        });
+    }
+
+    createCheckpoints() {
+        // Place checkpoints at strategic positions
+        const checkpointPositions = [
+            { x: 300, y: 400 },
+            { x: 800, y: 400 }
+        ];
+        
+        checkpointPositions.forEach(pos => {
+            const checkpoint = new Checkpoint(this, pos.x, pos.y);
+            this.checkpoints.push(checkpoint);
+        });
+    }
+
+    updateHealthDisplay() {
+        if (this.healthText && this.player) {
+            this.healthText.setText(`Health: ${this.player.health}`);
+        }
     }
 
     update() {
