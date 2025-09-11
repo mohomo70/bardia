@@ -14,7 +14,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.isAttacking = false;
         this.attackCooldown = 0;
         
-        // Coyote time
+        // Coyote time (5 frames grace after leaving ground)
         this.coyoteTime = 0;
         this.coyoteTimeMax = 5;
         
@@ -102,9 +102,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             }
         }
 
-        // Variable jump height
+        // Variable jump height (shorter tap = smaller apex)
         if (this.cursors.up.isUp && this.body.velocity.y < 0) {
-            this.setVelocityY(this.body.velocity.y * 0.5);
+            this.setVelocityY(this.body.velocity.y * 0.6);
         }
     }
 
@@ -140,19 +140,27 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.attackCooldown = 30; // 0.5 seconds at 60fps
         this.play('attack', true);
 
-        // Create sword hit box
-        const hitBox = this.scene.add.rectangle(
+        // Create sword hit box using Phaser.Geom.Rectangle
+        const hitBoxRect = new Phaser.Geom.Rectangle(
             this.x + (this.flipX ? -20 : 20),
-            this.y,
+            this.y - 15,
             40,
-            30,
+            30
+        );
+        
+        // Create visual hit box for debugging
+        const hitBox = this.scene.add.rectangle(
+            hitBoxRect.x,
+            hitBoxRect.y,
+            hitBoxRect.width,
+            hitBoxRect.height,
             0xff0000,
             0.5
         );
         hitBox.setDepth(1);
 
         // Check collision with enemies
-        this.scene.physics.add.overlap(hitBox, this.scene.enemy, (hitBox, enemy) => {
+        this.scene.physics.add.overlap(hitBox, this.scene.enemies, (hitBox, enemy) => {
             if (enemy.takeDamage) {
                 enemy.takeDamage(1);
                 try {
