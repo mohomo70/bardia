@@ -28,6 +28,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.attackBuffer = 0;
         this.attackBufferMax = 4;
         
+        // For dust effect
+        this.previousVelocityY = 0;
+        
         // Create animations
         this.createAnimations();
         
@@ -112,6 +115,12 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         if (this.cursors.up.isUp && this.body.velocity.y < 0) {
             this.setVelocityY(this.body.velocity.y * 0.6);
         }
+
+        // Dust cloud on landing
+        if (this.body.touching.down && this.body.velocity.y > 0 && this.previousVelocityY < 0) {
+            this.createLandingDust();
+        }
+        this.previousVelocityY = this.body.velocity.y;
     }
 
     handleAttack() {
@@ -239,5 +248,31 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     isDead() {
         return this.health <= 0;
+    }
+
+    createLandingDust() {
+        // Create dust cloud particles
+        for (let i = 0; i < 6; i++) {
+            const dust = this.scene.add.rectangle(
+                this.x + Phaser.Math.Between(-15, 15),
+                this.y + 10,
+                3,
+                3,
+                0x8B7355
+            );
+            
+            this.scene.tweens.add({
+                targets: dust,
+                x: dust.x + Phaser.Math.Between(-20, 20),
+                y: dust.y + Phaser.Math.Between(5, 15),
+                alpha: 0,
+                scale: 0,
+                duration: 800,
+                ease: 'Power2',
+                onComplete: () => {
+                    dust.destroy();
+                }
+            });
+        }
     }
 }

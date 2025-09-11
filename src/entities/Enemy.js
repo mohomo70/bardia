@@ -58,6 +58,11 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.setVelocityX(direction * this.knockbackForce);
 
         if (this.health <= 0) {
+            // Slow-motion effect on lethal blow
+            this.scene.timeScale = 0.3;
+            this.scene.time.delayedCall(200, () => {
+                this.scene.timeScale = 1.0;
+            });
             this.die();
         }
     }

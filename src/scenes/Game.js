@@ -59,9 +59,12 @@ export default class Game extends Phaser.Scene {
             checkpoint.activate();
         });
 
-        // Set up camera
+        // Set up camera with lookahead
         this.cameras.main.setBounds(0, 0, LEVEL1_DATA.width * LEVEL1_DATA.tileWidth, LEVEL1_DATA.height * LEVEL1_DATA.tileHeight);
         this.cameras.main.startFollow(this.player, true, 0.05, 0.05);
+        
+        // Camera lookahead
+        this.cameraOffsetX = 0;
 
         // Create HUD
         this.coinsText = this.add.text(16, 16, 'Coins: 0', {
@@ -76,8 +79,26 @@ export default class Game extends Phaser.Scene {
         });
         this.healthText.setScrollFactor(0);
 
+        this.timerText = this.add.text(16, 104, 'Time: 0.0s', {
+            fontSize: '24px',
+            fill: '#fff'
+        });
+        this.timerText.setScrollFactor(0);
+
+        if (this.bestTime) {
+            this.bestTimeText = this.add.text(16, 130, `Best: ${this.bestTime}s`, {
+                fontSize: '20px',
+                fill: '#ffff00'
+            });
+            this.bestTimeText.setScrollFactor(0);
+        }
+
         // Initialize registry
         this.registry.set('coins', 0);
+        
+        // Speed-run timer
+        this.startTime = Date.now();
+        this.bestTime = localStorage.getItem('bestTime') || null;
     }
 
     createLevel() {
@@ -226,5 +247,42 @@ export default class Game extends Phaser.Scene {
                 enemy.update();
             }
         });
+        
+        // Camera lookahead
+        this.updateCameraLookahead();
+        
+        // Update timer
+        this.updateTimer();
+    }
+
+    updateCameraLookahead() {
+        if (!this.player) return;
+        
+        const lookaheadDistance = 80;
+        const targetOffset = this.player.flipX ? -lookaheadDistance : lookaheadDistance;
+        
+        // Smoothly interpolate to target offset
+        this.cameraOffsetX = Phaser.Math.Linear(this.cameraOffsetX, targetOffset, 0.1);
+        
+        // Apply offset to camera
+        this.cameras.main.setOffset(this.cameraOffsetX, 0);
+    }
+
+    updateTimer() {
+        if (this.timerText) {
+            const currentTime = (Date.now() - this.startTime) / 1000;
+            this.timerText.setText(`Time: ${currentTime.toFixed(1)}s`);
+        }
+    }
+
+    saveBestTime() {
+        const currentTime = (Date.now() - this.startTime) / 1000;
+        const bestTime = parseFloat(this.bestTime) || Infinity;
+        
+        if (currentTime < bestTime) {
+            this.bestTime = currentTime.toFixed(1);
+            localStorage.setItem('bestTime', this.bestTime);
+            console.log(`New best time: ${this.bestTime}s`);
+        }
     }
 }

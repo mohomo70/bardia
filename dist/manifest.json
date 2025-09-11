@@ -1,0 +1,16 @@
+{
+  "name": "Sword of Xolan-like Platformer",
+  "short_name": "Platformer",
+  "description": "A 2D action platformer built with Phaser 3",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#2c3e50",
+  "theme_color": "#2c3e50",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "32x32",
+      "type": "image/svg+xml"
+    }
+  ]
+}
