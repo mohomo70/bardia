@@ -2,6 +2,7 @@ import Player from '../entities/Player.js';
 import Enemy from '../entities/Enemy.js';
 import Heart from '../entities/Heart.js';
 import Checkpoint from '../entities/Checkpoint.js';
+import TouchControls from '../entities/TouchControls.js';
 import { LEVEL1_DATA, TILE_TYPES } from '../data/Level1.js';
 
 export default class Game extends Phaser.Scene {
@@ -19,6 +20,13 @@ export default class Game extends Phaser.Scene {
         // Create player at spawn point
         const playerSpawn = this.findSpawnPoint(TILE_TYPES.PLAYER_SPAWN);
         this.player = new Player(this, playerSpawn.x, playerSpawn.y);
+        
+        // Create touch controls
+        this.touchControls = new TouchControls(this);
+        this.player.setTouchControls(this.touchControls);
+        
+        // Enable touch controls on mobile devices
+        this.detectAndEnableTouchControls();
 
         // Create enemies at spawn points
         this.enemies = [];
@@ -99,6 +107,27 @@ export default class Game extends Phaser.Scene {
         // Speed-run timer
         this.startTime = Date.now();
         this.bestTime = localStorage.getItem('bestTime') || null;
+    }
+    
+    detectAndEnableTouchControls() {
+        // Check if device supports touch
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        
+        if (isTouchDevice) {
+            this.touchControls.enable();
+            console.log('Touch controls enabled for mobile device');
+        } else {
+            // Allow manual toggle for desktop testing
+            this.input.keyboard.on('keydown-T', () => {
+                if (this.touchControls.isEnabled) {
+                    this.touchControls.disable();
+                    console.log('Touch controls disabled');
+                } else {
+                    this.touchControls.enable();
+                    console.log('Touch controls enabled');
+                }
+            });
+        }
     }
 
     createLevel() {
