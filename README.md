@@ -18,6 +18,32 @@ A Phaser 3 based 2D action platformer inspired by Sword of Xolan.
 
 ### 🚀 Getting Started
 
+#### Option 1: Docker (Recommended)
+
+1. **Development with Docker:**
+   ```bash
+   # Quick start
+   ./docker-run.sh dev
+   
+   # Or using docker-compose
+   docker-compose --profile dev up --build
+   ```
+
+2. **Production with Docker:**
+   ```bash
+   # Production on port 80
+   ./docker-run.sh prod
+   
+   # Production on port 8080
+   ./docker-run.sh prod-custom
+   ```
+
+3. Open your browser to:
+   - Development: `http://localhost:3000`
+   - Production: `http://localhost` (port 80) or `http://localhost:8080`
+
+#### Option 2: Local Development
+
 1. Install dependencies:
    ```bash
    npm install
@@ -61,10 +87,25 @@ assets/
 - **Parallax Background**: Multi-layer scrolling background
 
 ### 🚀 Deployment
+
+#### Docker Deployment
+- **Development**: Hot reload with volume mounting
+- **Production**: Optimized nginx server with gzip compression
+- **Multi-stage Build**: Efficient production images
+- **Easy Commands**: `./docker-run.sh [dev|prod|prod-custom]`
+
+#### Traditional Deployment
 - **GitHub Pages**: Automatic deployment on push to main
 - **itch.io Ready**: Build includes README_itch.txt for publishing
 - **Local Development**: `npm run dev` for development server
 - **Production Build**: `npm run build` for optimized build
+
+#### Docker Files
+- `Dockerfile.dev` - Development environment
+- `Dockerfile` - Production environment
+- `docker-compose.yml` - Orchestration
+- `nginx.conf` - Production server config
+- `DOCKER.md` - Detailed Docker documentation
 
 ### 📝 Technical Notes
 - Built with Phaser 3 and Vite
@@ -97,6 +138,23 @@ assets/
 
 ## Development Commands
 
+### Docker Commands (Recommended)
+```bash
+# Development with hot reload
+./docker-run.sh dev
+# or
+docker-compose --profile dev up --build
+
+# Production on port 80
+./docker-run.sh prod
+# or
+docker-compose --profile prod up --build
+
+# Production on port 8080
+./docker-run.sh prod-custom
+```
+
+### Traditional Commands
 ```bash
 # dev server with hot reload
 npm run dev
