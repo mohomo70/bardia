@@ -40,6 +40,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         // Set up input
         this.cursors = scene.input.keyboard.createCursorKeys();
         this.spaceKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        
+        // Touch controls will be set by the Game scene
+        this.touchControls = null;
     }
 
     createAnimations() {
@@ -72,16 +75,23 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
         this.play('idle');
     }
+    
+    setTouchControls(touchControls) {
+        this.touchControls = touchControls;
+    }
 
     handleMovement() {
-        // Left/Right movement
-        if (this.cursors.left.isDown) {
+        // Left/Right movement - check both keyboard and touch
+        const leftPressed = this.cursors.left.isDown || (this.touchControls && this.touchControls.left);
+        const rightPressed = this.cursors.right.isDown || (this.touchControls && this.touchControls.right);
+        
+        if (leftPressed) {
             this.setVelocityX(-this.speed);
             this.setFlipX(true);
             if (this.body.touching.down) {
                 this.play('run', true);
             }
-        } else if (this.cursors.right.isDown) {
+        } else if (rightPressed) {
             this.setVelocityX(this.speed);
             this.setFlipX(false);
             if (this.body.touching.down) {
@@ -101,7 +111,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             this.coyoteTime--;
         }
 
-        if (Phaser.Input.Keyboard.JustDown(this.cursors.up) && this.coyoteTime > 0) {
+        // Check for jump input from keyboard or touch
+        const jumpPressed = Phaser.Input.Keyboard.JustDown(this.cursors.up) || 
+                           (this.touchControls && this.touchControls.isJumpJustPressed());
+        
+        if (jumpPressed && this.coyoteTime > 0) {
             this.setVelocityY(this.jumpVelocity);
             this.coyoteTime = 0;
             try {
@@ -112,7 +126,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         }
 
         // Variable jump height (shorter tap = smaller apex)
-        if (this.cursors.up.isUp && this.body.velocity.y < 0) {
+        const upReleased = this.cursors.up.isUp && (!this.touchControls || !this.touchControls.up);
+        if (upReleased && this.body.velocity.y < 0) {
             this.setVelocityY(this.body.velocity.y * 0.6);
         }
 
@@ -129,8 +144,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             return;
         }
 
-        // Attack buffer
-        if (Phaser.Input.Keyboard.JustDown(this.spaceKey)) {
+        // Attack buffer - check both keyboard and touch
+        const attackPressed = Phaser.Input.Keyboard.JustDown(this.spaceKey) || 
+                             (this.touchControls && this.touchControls.isAttackJustPressed());
+        
+        if (attackPressed) {
             if (this.body.touching.down) {
                 this.performAttack();
             } else {
